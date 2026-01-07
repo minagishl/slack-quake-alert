@@ -26,7 +26,7 @@ class Logger {
 
   constructor() {
     // Read NODE_ENV and handle empty strings (Bun may pass empty string)
-    const env = (process.env.NODE_ENV?.trim() || 'development').toLowerCase();
+    const env = (Bun.env.NODE_ENV?.trim() || 'development').toLowerCase();
     this.isDevelopment = env === 'development';
     this.minLevel = this.isDevelopment ? LOG_LEVELS.DEBUG : LOG_LEVELS.INFO;
   }
