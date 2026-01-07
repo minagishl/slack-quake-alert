@@ -25,7 +25,8 @@ class Logger {
   private isDevelopment: boolean;
 
   constructor() {
-    const env = process.env.NODE_ENV || 'development';
+    // Read NODE_ENV and handle empty strings (Bun may pass empty string)
+    const env = (process.env.NODE_ENV?.trim() || 'development').toLowerCase();
     this.isDevelopment = env === 'development';
     this.minLevel = this.isDevelopment ? LOG_LEVELS.DEBUG : LOG_LEVELS.INFO;
   }

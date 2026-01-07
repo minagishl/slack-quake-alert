@@ -35,11 +35,13 @@ export interface Config {
 function loadConfig(): Readonly<Config> {
   try {
     // Parse and validate environment variables
+    // Handle empty string for NODE_ENV (treat as undefined to use default)
+    const nodeEnv = process.env.NODE_ENV?.trim() || undefined;
     const env = envSchema.parse({
       SLACK_BOT_TOKEN: process.env.SLACK_BOT_TOKEN,
       SLACK_CHANNEL_ID: process.env.SLACK_CHANNEL_ID,
       MIN_INTENSITY: process.env.MIN_INTENSITY,
-      NODE_ENV: process.env.NODE_ENV,
+      NODE_ENV: nodeEnv,
       GITHUB_IMAGE_BASE_URL: process.env.GITHUB_IMAGE_BASE_URL,
     });
 

@@ -35,4 +35,5 @@ RUN groupadd --system --gid 1001 nodejs && \
 USER bunuser
 
 # Run the application
-CMD ["bun", "run", "start"]
+# Use exec form with explicit NODE_ENV to ensure it's passed to Bun
+CMD ["bun", "run", "dist/index.js"]
