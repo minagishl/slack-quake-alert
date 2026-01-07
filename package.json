@@ -1,0 +1,42 @@
+{
+  "name": "slack-quake-alert",
+  "version": "1.0.0",
+  "description": "Send earthquake information to Slack using p2pquake API",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "build": "bun build src/index.ts --outdir dist --target bun",
+    "start": "NODE_ENV=production bun run dist/index.js",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "slack",
+    "earthquake",
+    "notification",
+    "p2pquake"
+  ],
+  "author": "minagishl",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/web-api": "^7.11.0",
+    "p2pquake-client": "^1.1.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "@types/bun": "latest",
+    "@types/node": "^22.10.2",
+    "eslint": "^9.18.0",
+    "@typescript-eslint/parser": "^8.19.1",
+    "@typescript-eslint/eslint-plugin": "^8.19.1",
+    "prettier": "^3.4.2"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}

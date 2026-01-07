@@ -1,0 +1,19 @@
+services:
+  slack-quake-alert:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: slack-quake-alert
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # Optional: Uncomment to use specific timezone
+    # environment:
+    #   - TZ=Asia/Tokyo
