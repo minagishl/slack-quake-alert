@@ -27,12 +27,12 @@ export function formatQuakeMessage(quake: JMAQuake): KnownBlock[] {
     type: 'section',
     text: {
       type: 'mrkdwn',
-      text: '*Earthquake Information*',
+      text: '*地震情報*',
     },
     accessory: {
       type: 'image',
       image_url: getImageUrl('rotating_light.png'),
-      alt_text: 'Earthquake Information',
+      alt_text: '地震情報',
     },
   });
 
@@ -41,7 +41,7 @@ export function formatQuakeMessage(quake: JMAQuake): KnownBlock[] {
     type: 'section',
     text: {
       type: 'mrkdwn',
-      text: `An earthquake occurred`,
+      text: `<!here> 地震が発生しました`,
     },
   });
 
@@ -50,20 +50,20 @@ export function formatQuakeMessage(quake: JMAQuake): KnownBlock[] {
   });
 
   // Main earthquake information
-  const earthquakeInfo = [`*Occurrence Time*\n${formatDateTime(quake.earthquake.time)}`];
+  const earthquakeInfo = [`*発生時刻*\n${formatDateTime(quake.earthquake.time)}`];
 
   if (quake.earthquake.hypocenter?.name) {
-    earthquakeInfo.push(`*Epicenter*\n${quake.earthquake.hypocenter.name}`);
+    earthquakeInfo.push(`*震源地*\n${quake.earthquake.hypocenter.name}`);
   }
 
   if (quake.earthquake.hypocenter?.magnitude !== undefined) {
     const magnitude = quake.earthquake.hypocenter.magnitude;
-    earthquakeInfo.push(`*Magnitude*\nM${magnitude >= 0 ? magnitude.toFixed(1) : 'Unknown'}`);
+    earthquakeInfo.push(`*マグニチュード*\nM${magnitude >= 0 ? magnitude.toFixed(1) : '不明'}`);
   }
 
   if (quake.earthquake.hypocenter?.depth !== undefined) {
     const depth = quake.earthquake.hypocenter.depth;
-    earthquakeInfo.push(`*Depth*\n${depth >= 0 ? `Approx. ${depth}km` : 'Unknown'}`);
+    earthquakeInfo.push(`*深さ*\n${depth >= 0 ? `約${depth}km` : '不明'}`);
   }
 
   // Tsunami information
@@ -91,7 +91,7 @@ export function formatQuakeMessage(quake: JMAQuake): KnownBlock[] {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `*Intensity at Various Locations*\n${observationText}`,
+        text: `*各地の震度*\n${observationText}`,
       },
     });
   }
@@ -106,34 +106,19 @@ export function formatQuakeMessage(quake: JMAQuake): KnownBlock[] {
     elements: [
       {
         type: 'mrkdwn',
-        text: `Information Release Time: ${formatDateTime(quake.time)} | Provided by: P2P Earthquake Information`,
+        text: `情報発表時刻: ${formatDateTime(quake.time)} | 提供: P2P地震情報`,
       },
     ],
   });
 
-  // Add intensity image as accessory before main info
-  const intensityBlock: KnownBlock = {
+  // Add maximum intensity section
+  blocks.splice(3, 0, {
     type: 'section',
     text: {
       type: 'mrkdwn',
-      text: `*Maximum Intensity*\n${intensityToString(maxIntensity)}`,
+      text: `*最大震度*\n${intensityToString(maxIntensity)}`,
     },
-    accessory: {
-      type: 'image',
-      image_url: getIntensityImageUrl(maxIntensity),
-      alt_text: intensityToString(maxIntensity),
-    },
-  };
-
-  // Insert intensity block before earthquake info section
-  const earthquakeInfoIndex = blocks.findIndex(
-    (block) => block.type === 'section' && 'fields' in block
-  );
-  if (earthquakeInfoIndex >= 0) {
-    blocks.splice(earthquakeInfoIndex, 0, intensityBlock);
-  } else {
-    blocks.push(intensityBlock);
-  }
+  });
 
   return blocks;
 }
@@ -165,11 +150,11 @@ function formatObservationPoints(
     const intensityStr = intensityToString(intensity);
 
     if (locations.length <= maxDisplay) {
-      lines.push(`*${intensityStr}*: ${locations.join(', ')}`);
+      lines.push(`*${intensityStr}*: ${locations.join('、')}`);
     } else {
       const displayed = locations.slice(0, maxDisplay);
       const remaining = locations.length - maxDisplay;
-      lines.push(`*${intensityStr}*: ${displayed.join(', ')} and ${remaining} other locations`);
+      lines.push(`*${intensityStr}*: ${displayed.join('、')} 他${remaining}箇所`);
     }
   });
 
@@ -177,7 +162,7 @@ function formatObservationPoints(
 }
 
 /**
- * Format date time to English format
+ * Format date time to Japanese format
  */
 function formatDateTime(dateTime: string): string {
   const date = new Date(dateTime);
@@ -188,7 +173,7 @@ function formatDateTime(dateTime: string): string {
   const hours = date.getHours();
   const minutes = date.getMinutes().toString().padStart(2, '0');
 
-  return `${year}/${month}/${day} ${hours}:${minutes}`;
+  return `${year}年${month}月${day}日 ${hours}時${minutes}分`;
 }
 
 /**
@@ -196,12 +181,12 @@ function formatDateTime(dateTime: string): string {
  */
 function getTsunamiText(tsunamiType: string): string {
   const tsunamiMap: Record<string, string> = {
-    None: 'None',
-    Unknown: 'Unknown',
-    Checking: 'Under investigation',
-    NonEffective: 'Minor sea level change (no damage expected)',
-    Watch: 'Tsunami Advisory',
-    Warning: 'Tsunami Warning',
+    None: 'なし',
+    Unknown: '不明',
+    Checking: '調査中',
+    NonEffective: '若干の海面変動（被害の心配なし）',
+    Watch: '津波注意報',
+    Warning: '津波警報',
   };
 
   return tsunamiMap[tsunamiType] || tsunamiType;
@@ -218,12 +203,12 @@ export function formatTsunamiMessage(tsunami: JMATsunami): KnownBlock[] {
     type: 'section',
     text: {
       type: 'mrkdwn',
-      text: '*Tsunami Information*',
+      text: '*津波情報*',
     },
     accessory: {
       type: 'image',
       image_url: getImageUrl('ocean.png'),
-      alt_text: 'Tsunami Information',
+      alt_text: '津波情報',
     },
   });
 
@@ -231,7 +216,7 @@ export function formatTsunamiMessage(tsunami: JMATsunami): KnownBlock[] {
     type: 'section',
     text: {
       type: 'mrkdwn',
-      text: `Tsunami information has been issued`,
+      text: `<!here> 津波情報が発表されました`,
     },
   });
 
@@ -245,33 +230,27 @@ export function formatTsunamiMessage(tsunami: JMATsunami): KnownBlock[] {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '*This tsunami information has been cancelled*',
+        text: '*この津波情報は解除されました*',
       },
     });
   }
 
   // Tsunami areas information
   if (tsunami.areas && tsunami.areas.length > 0) {
-    // Create a section for each area (to display images)
-    tsunami.areas.forEach((area) => {
-      const grade = getTsunamiGradeText(area.grade);
-      const immediate = area.immediate ? ' *Evacuate immediately*' : '';
-      const gradeImageUrl = getTsunamiGradeImageUrl(area.grade);
+    const areasText = tsunami.areas
+      .map((area) => {
+        const grade = getTsunamiGradeText(area.grade);
+        const immediate = area.immediate ? ' ⚠️ *直ちに避難*' : '';
+        return `*${area.name}*: ${grade}${immediate}`;
+      })
+      .join('\n');
 
-      blocks.push({
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `*${area.name}*\n${grade}${immediate}`,
-        },
-        accessory: gradeImageUrl
-          ? {
-              type: 'image',
-              image_url: gradeImageUrl,
-              alt_text: grade,
-            }
-          : undefined,
-      });
+    blocks.push({
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `*津波予報区*\n${areasText}`,
+      },
     });
   }
 
@@ -285,7 +264,7 @@ export function formatTsunamiMessage(tsunami: JMATsunami): KnownBlock[] {
     elements: [
       {
         type: 'mrkdwn',
-        text: `Information Release Time: ${formatDateTime(tsunami.time)} | Provided by: P2P Earthquake Information`,
+        text: `情報発表時刻: ${formatDateTime(tsunami.time)} | 提供: P2P地震情報`,
       },
     ],
   });
@@ -351,13 +330,6 @@ export function formatEEWMessage(eew: EEW): KnownBlock[] {
       type: 'mrkdwn',
       text: alertText,
     },
-    accessory: isWarning
-      ? {
-          type: 'image',
-          image_url: getImageUrl('warning.png'),
-          alt_text: '警告',
-        }
-      : undefined,
   });
 
   blocks.push({
@@ -386,20 +358,9 @@ export function formatEEWMessage(eew: EEW): KnownBlock[] {
     eewInfo.push(`*深さ*\n約${eew.earthquake.hypocenter.depth}km`);
   }
 
-  // Add max predicted intensity with image
+  // Add max predicted intensity
   if (maxPredictedIntensity > 0) {
-    blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `*最大予測震度*\n${intensityToString(maxPredictedIntensity)}`,
-      },
-      accessory: {
-        type: 'image',
-        image_url: getIntensityImageUrl(maxPredictedIntensity),
-        alt_text: intensityToString(maxPredictedIntensity),
-      },
-    });
+    eewInfo.push(`*最大予測震度*\n${intensityToString(maxPredictedIntensity)}`);
   }
 
   if (eewInfo.length > 0) {
@@ -474,35 +435,6 @@ function getTsunamiGradeText(grade: string): string {
   };
 
   return gradeMap[grade] || grade;
-}
-
-/**
- * Get tsunami grade image URL
- */
-function getTsunamiGradeImageUrl(grade: string): string {
-  const imageMap: Record<string, string> = {
-    MajorWarning: 'circle_red.png',
-    Warning: 'circle_orange.png',
-    Watch: 'circle_yellow.png',
-  };
-
-  return imageMap[grade] ? getImageUrl(imageMap[grade]) : '';
-}
-
-/**
- * Get intensity image URL
- */
-function getIntensityImageUrl(intensity: SeismicIntensity): string {
-  // Return image filename based on intensity
-  // Currently using warning level images as intensity-specific images are not available
-  if (intensity >= 55) {
-    return getImageUrl('circle_red.png'); // Intensity 6- or higher
-  } else if (intensity >= 45) {
-    return getImageUrl('circle_orange.png'); // Intensity 5- or higher
-  } else if (intensity >= 30) {
-    return getImageUrl('circle_yellow.png'); // Intensity 3 or higher
-  }
-  return getImageUrl('mega.png'); // Other cases
 }
 
 /**
