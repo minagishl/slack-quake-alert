@@ -41,7 +41,7 @@ export function formatQuakeMessage(quake: JMAQuake): KnownBlock[] {
     type: 'section',
     text: {
       type: 'mrkdwn',
-      text: `<!here> 地震が発生しました`,
+      text: `地震が発生しました`,
     },
   });
 
@@ -216,7 +216,7 @@ export function formatTsunamiMessage(tsunami: JMATsunami): KnownBlock[] {
     type: 'section',
     text: {
       type: 'mrkdwn',
-      text: `<!here> 津波情報が発表されました`,
+      text: `津波情報が発表されました`,
     },
   });
 
