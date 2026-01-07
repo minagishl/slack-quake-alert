@@ -330,13 +330,15 @@ sudo systemctl enable slack-quake-alert
 sudo systemctl start slack-quake-alert
 ```
 
-## License
-
-MIT
-
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## Related Links
 
@@ -344,3 +346,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 - [p2pquake-client](https://github.com/p2pquake/p2pquake-client-js)
 - [Slack API](https://api.slack.com/)
 - [Bun](https://bun.sh/)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
