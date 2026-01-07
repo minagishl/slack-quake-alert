@@ -312,7 +312,7 @@ export function formatEEWMessage(eew: EEW): KnownBlock[] {
   const imageFilename = isCancelled
     ? 'no.png'
     : isTest
-      ? 'mega.png' // 訓練用の画像がない場合はmega.pngを使用
+      ? 'mega.png' // Use mega.png when no training-specific image is available
       : isWarning
         ? 'warning.png'
         : 'mega.png';
@@ -493,16 +493,16 @@ function getTsunamiGradeImageUrl(grade: string): string {
  * Get intensity image URL
  */
 function getIntensityImageUrl(intensity: SeismicIntensity): string {
-  // 震度に応じた画像ファイル名を返す
-  // 現在は震度の画像がないため、警告レベルの画像を使用
+  // Return image filename based on intensity
+  // Currently using warning level images as intensity-specific images are not available
   if (intensity >= 55) {
-    return getImageUrl('circle_red.png'); // 震度6弱以上
+    return getImageUrl('circle_red.png'); // Intensity 6- or higher
   } else if (intensity >= 45) {
-    return getImageUrl('circle_orange.png'); // 震度5弱以上
+    return getImageUrl('circle_orange.png'); // Intensity 5- or higher
   } else if (intensity >= 30) {
-    return getImageUrl('circle_yellow.png'); // 震度3以上
+    return getImageUrl('circle_yellow.png'); // Intensity 3 or higher
   }
-  return getImageUrl('mega.png'); // その他
+  return getImageUrl('mega.png'); // Other cases
 }
 
 /**
