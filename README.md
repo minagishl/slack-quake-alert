@@ -343,7 +343,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## Related Links
 
 - [P2P Quake Information](https://www.p2pquake.net/)
-- [p2pquake-client](https://github.com/p2pquake/p2pquake-client-js)
+- [p2pquake-client](https://github.com/minagishl/p2pquake-client)
 - [Slack API](https://api.slack.com/)
 - [Bun](https://bun.sh/)
 
