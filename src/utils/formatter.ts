@@ -27,7 +27,7 @@ export function formatQuakeMessage(quake: JMAQuake): KnownBlock[] {
     type: 'section',
     text: {
       type: 'mrkdwn',
-      text: `*地震情報*\n地震が発生しました`,
+      text: `*地震情報*\n地震が発生しました\n今後の情報に注意してください`,
     },
     accessory: {
       type: 'image',
