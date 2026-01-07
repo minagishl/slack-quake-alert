@@ -28,8 +28,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY package.json ./
 
 # Create non-root user
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 bunuser && \
+RUN groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 --gid nodejs --create-home bunuser && \
     chown -R bunuser:nodejs /app
 
 USER bunuser
